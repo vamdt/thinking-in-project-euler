@@ -28,26 +28,29 @@ end
 def max_product_of_numbers(numbers)
   max = 0
   numbers.each_with_index do |number, index|
-    next if index % 20 > 16
-    pr = product([index, index+1, index+2, index+3], numbers)
+    if index > 339
+      pr = product([index, index+1, index+2, index+3], numbers)
+    elsif index % 20 > 16
+      pr = largest(product([index, index+20, index+40, index+60], numbers),
+                    product([index, index+19, index+38, index+57], numbers))
+    elsif index % 20 < 3
+      pr = largest(product([index, index+1, index+2, index+3], numbers),
+                   product([index, index+20, index+40, index+60], numbers),
+                   product([index, index+21, index+42, index+63], numbers))
+    else
+      pr = largest(product([index, index+1, index+2, index+3], numbers),
+                   product([index, index+20, index+40, index+60], numbers),
+                   product([index, index+21, index+42, index+63], numbers),
+                   product([index, index+19, index+38, index+57], numbers))
+    end
     max = pr if max < pr
+    max
   end
-  numbers.each_with_index do |number, index|
-    next if index > 339
-    pr = product([index, index+20, index+40, index+60], numbers)
-    max = pr if max < pr
-  end
-  numbers.each_with_index do |number, index|
-    next if index % 20 > 16 || index > 339
-    pr = product([index, index+21, index+42, index+63], numbers)
-    max = pr if max < pr
-  end
-  numbers.each_with_index do |number, index|
-    next if index % 20 < 3 || index > 339
-    pr = product([index, index+19, index+38, index+57], numbers)
-    max = pr if max < pr
-  end
-  max
+end
+
+def largest(*args)
+  max = args[0] || 0
+  args.each {|i| max = i if max < i}
 end
 
 def numbers(digits)
