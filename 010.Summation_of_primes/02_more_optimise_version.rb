@@ -11,7 +11,6 @@ def primes(limit)
   end
 
   result.each_with_index {|value, index| result[index] = value ? 0 : index*2-1 }.reduce(:+) + 2
-  #result.each_with_index {|value, index| puts index*2 -1}
 end
 
 puts primes(2000000)
